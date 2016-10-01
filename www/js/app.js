@@ -53,10 +53,6 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
       desiredFields: ['displayName', 'name', 'phoneNumbers', 'emails']
     };
 
-    if ($ionicPlatform.isAndroid()) {
-      opts.hasPhoneNumber = true;         //hasPhoneNumber only works for android.
-    };
-
     $scope.getContactList = function() {
         $cordovaContacts.find(opts).then(function(result) {
             $scope.contacts = result;
