@@ -40,45 +40,31 @@ app.config(function($stateProvider, $urlRouterProvider) {
   .state('edit', {
     url: '/edit',
     templateUrl: 'edit.html',
-    // controller : "EditCtrl"
+    controller : "EditCtrl"
   })
   
   $urlRouterProvider.otherwise("/");
 })
 
-app.controller('ContatosCtrl', function($scope, $cordovaContacts) {
+app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform) {
+
+    var opts = {                                          
+      multiple: true,                                     
+      desiredFields: ['displayName', 'name', 'phoneNumbers', 'emails']
+    };
+
+    if ($ionicPlatform.isAndroid()) {
+      opts.hasPhoneNumber = true;         //hasPhoneNumber only works for android.
+    };
 
     $scope.getContactList = function() {
-        $cordovaContacts.find({filter: ''}).then(function(result) {
+        $cordovaContacts.find(opts).then(function(result) {
             $scope.contacts = result;
         }, function(error) {
             console.log("ERROR: " + error);
         });
     };
  
-    $scope.createContact = function() {
-
-        // $cordovaContacts.save(
-        //     {
-        //         "displayName": "Steve Jobs", 
-        //         "name": "Steve Jobs", 
-        //         "phoneNumbers": [ {"number": "123456789"}], 
-        //         "emails": [{"email": "SteveJobs@apple.com"}]
-        //     }).then(function(result) {
-        //     console.log(JSON.stringify(result));
-        // }, function(error) {
-        //     console.log(error);
-        // });
-    };
-    
-    $scope.removeContact = function() {
-        $cordovaContacts.remove({"displayName": "Steve Jobs"}).then(function(result) {
-            console.log(JSON.stringify(result));
-        }, function(error) {
-            console.log(error);
-        });
-    };
-
     $scope.editContact = function(contact) {
 
     }
@@ -86,17 +72,27 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts) {
 });
 
 
-app.controller('NewCtrl', function($scope, $cordovaContacts) {
+app.controller('NewCtrl', function($scope, $cordovaContacts, $location) {
     $scope.createContact = function(contact) {
         
         $cordovaContacts.save(
             {
-                "displayName": contact.nome, 
-                "name": contact.nome, 
-                "phoneNumbers": [ {"number": contact.telefone}], 
-                "emails": [{"email": contact.email}]
+                "displayName": contact.nome,
+                "name": contact.nome,
+                "phoneNumbers": [
+                    {
+                        "value": contact.telefone,
+                        "type": "mobile"
+                    }
+                ],
+                "emails": [
+                    {
+                        "value": contact.email,
+                        "type": "home"
+                    }
+                ]
             }).then(function(result) {
-            console.log(JSON.stringify(result));
+            $location.path("/");
             
         }, function(error) {
             console.log(error);

@@ -11,13 +11,12 @@
         <script src="js/ng-cordova.min.js"></script>
         <script src="cordova.js"></script>
         <script src="js/app.js"></script>
-    </head>
-<body >
-    <ion-nav-bar class="bar-positive nav-title-slide-ios7" align-title="center">
-      <ion-nav-back-button class="button-icon ion-arrow-left-c">
-      </ion-nav-back-button>
-    </ion-nav-bar>
 
+		<link rel="stylesheet" href="styles/styles.css">
+		<link href="css/bootstrap.min.css" rel="stylesheet"> 
+</head>
+
+<body>
     <ion-nav-view class="slide-left-right"></ion-nav-view>
 
     <script id="index.html" type="text/ng-template">
@@ -27,15 +26,13 @@
             <ion-pane ng-controller="ContatosCtrl">
                 <ion-header-bar class="bar-stable">
                     <button class="button" ng-click="getContactList()">Load</button>
-                    <h1 class="title">Ionic Blank Starter</h1>
+                    <h1 class="title">Contatos</h1>
                     <a class="button" ui-sref="new">New</a>
                 </ion-header-bar>
                 <ion-content>
                     <ion-list>
                         <ion-item ng-repeat="contact in contacts">
-                            <div ng-click="editContact()">
-                                {{contact.displayName}}
-                            </div>
+                            <a ui-sref="edit">{{contact.displayName}} - {{contact.phoneNumbers[0].value}}</a>
                         </ion-item>
                     </ion-list>
                 </ion-content>
@@ -48,10 +45,10 @@
       <!-- The title of the ion-view will be shown on the navbar -->
       <ion-view title="Novo Contato">
         <form ng-submit="createContact(contact)">
-            <div class="list" style="margin-top:50px">
-                Nome: <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome"><br>
-                E-mail: <input type="text" name="email" ng-model="contact.email" placeholder="Email"><br>
-                Telefone <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone"><br>
+            <div class="list" style="margin:0 auto; padding-left: 25px; padding-right: 25px; ">
+                Nome: <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome" required><br>
+                E-mail: <input type="email" name="email" ng-model="contact.email" placeholder="Email" required><br>
+                Telefone <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone" required><br>
             </div>
             <div class="padding">
                 <button type="submit" class="button button-block button-positive">Criar Contato</button>
@@ -62,12 +59,17 @@
 
     <script id="edit.html" type="text/ng-template">
       <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="Page 3">
-        <ion-content class="padding">
-          <!-- The content of the page -->
-          <a class="button" ui-sref="page1">Go To Page 1</a>
-          <a class="button" ui-sref="page2">Go To Page 2</a>
-        </ion-content>
+      <ion-view title="Editar Contato">
+        <form ng-submit="createContact(contact)">
+            <div class="list" style="margin-top:50px">
+                Nome: <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome"><br>
+                E-mail: <input type="text" name="email" ng-model="contact.email" placeholder="Email"><br>
+                Telefone <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone"><br>
+            </div>
+            <div class="padding">
+                <button type="submit" class="button button-block button-positive">Criar Contato</button>
+            </div>
+        </form>
       </ion-view>
     </script>     
     
