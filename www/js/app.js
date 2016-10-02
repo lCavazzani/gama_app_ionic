@@ -40,13 +40,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
   .state('edit', {
     url: '/edit',
     templateUrl: 'edit.html',
-    controller : "EditCtrl"
+    // controller : "EditCtrl"
   })
   
   $urlRouterProvider.otherwise("/");
 })
 
-app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform) {
+app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $location) {
 
     $ionicPlatform.ready(function() {
   
@@ -65,7 +65,16 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
         };
     
         $scope.editContact = function(contact) {
+            $location.path("/edit");
+        }
 
+        $scope.removeContact = function(contact) {
+            $cordovaContacts.remove({"id": contact.id}).then(function(result) {
+                console.log(JSON.stringify(result));
+                $scope.getContactList();
+            }, function(error) {
+                console.log(error);
+            });
         }
         
     });
