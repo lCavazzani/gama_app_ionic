@@ -48,22 +48,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform) {
 
-    var opts = {                                          
-      multiple: true,                                     
-      desiredFields: ['displayName', 'name', 'phoneNumbers', 'emails']
-    };
+    $ionicPlatform.ready(function() {
+  
+        var opts = {                                          
+            multiple: true,                                     
+            desiredFields: ['id', 'displayName', 'name', 'phoneNumbers', 'emails', 'photos'],
+            hasPhoneNumber: true
+        };
 
-    $scope.getContactList = function() {
-        $cordovaContacts.find(opts).then(function(result) {
-            $scope.contacts = result;
-        }, function(error) {
-            console.log("ERROR: " + error);
-        });
-    };
- 
-    $scope.editContact = function(contact) {
+        $scope.getContactList = function() {
+            $cordovaContacts.find(opts).then(function(result) {
+                $scope.contacts = result;
+            }, function(error) {
+                console.log("ERROR: " + error);
+            });
+        };
+    
+        $scope.editContact = function(contact) {
 
-    }
+        }
+        
+    });
  
 });
 

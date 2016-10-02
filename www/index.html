@@ -2,18 +2,17 @@
 <html ng-app="starter">
   <head>
         <meta charset="utf-8">
-      <script src="js/app.js"></script>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <title></title>
         <link href="lib/ionic/css/ionic.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <script src="lib/ionic/js/ionic.bundle.js"></script>
-        <script src="js/ng-cordova.min.js"></script>
+        <script src="lib/ngCordova/dist/ng-cordova.js"></script>
         <script src="cordova.js"></script>
         <script src="js/app.js"></script>
 
-		<link rel="stylesheet" href="styles/styles.css">
-		<link href="css/bootstrap.min.css" rel="stylesheet"> 
+		<!--<link rel="stylesheet" href="styles/styles.css">
+		<link href="css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 
 <body>
@@ -21,22 +20,26 @@
 
     <script id="index.html" type="text/ng-template">
       <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="Lista Contatos" hide-back-button="true">
-        <ion-content class="padding">
-            <ion-pane ng-controller="ContatosCtrl">
-                <ion-header-bar class="bar-stable">
-                    <button class="button" ng-click="getContactList()">Load</button>
-                    <h1 class="title">Contatos</h1>
-                    <a class="button" ui-sref="new">New</a>
-                </ion-header-bar>
-                <ion-content>
-                    <ion-list>
-                        <ion-item ng-repeat="contact in contacts">
-                            <a ui-sref="edit">{{contact.displayName}} - {{contact.phoneNumbers[0].value}}</a>
-                        </ion-item>
-                    </ion-list>
-                </ion-content>
-            </ion-pane>
+      <ion-view title="Contatos" hide-back-button="true" class="padding" ng-controller="ContatosCtrl">
+        <ion-header-bar class="bar-stable">
+            <button class="button" ng-click="getContactList()">Load</button>
+            <h1 class="title">Contatos</h1>
+            <a class="button" ui-sref="new">New</a>
+        </ion-header-bar>
+        <ion-content>
+            <ion-list>
+                <ion-item ng-repeat="contact in contacts">
+                    <a class="item item-avatar" href="edit">
+                        <img src="{{contact.photos[0].value}}" ng-if="contact.photos.length > 0">
+                        <img src="img/user-avatar.png" ng-if="!contact.photos">
+                        <h2>{{contact.displayName}}</h2>
+                        <p>{{contact.phoneNumbers[0].value}}</p>
+                    </a>
+                    <!--<a class="item item-icon-rigth" href="#">
+                        <i class="icon ion-trash-a"></i>
+                    </a>-->
+                </ion-item>
+            </ion-list>
         </ion-content>
       </ion-view>
     </script>    
