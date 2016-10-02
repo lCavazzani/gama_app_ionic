@@ -34,19 +34,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
   })
   .state('new', {
     url: '/new',
-    templateUrl: 'new.html',
+    templateUrl: 'templates/new.html',
     controller : "NewCtrl"
   })
   .state('edit', {
-    url: '/edit',
-    templateUrl: 'edit.html',
-    // controller : "EditCtrl"
+    url: '/edit/:contactId',
+    templateUrl: 'templates/edit.html',
+    controller : "EditCtrl"
   })
   
   $urlRouterProvider.otherwise("/");
 })
 
-app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $location, $state) {
+app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $state) {
 
     $ionicPlatform.ready(function() {
   
@@ -65,8 +65,7 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
         };
     
         $scope.editContact = function(contact) {
-            // $location.path("/edit");
-            $state.go("edit");
+            $state.go("edit", {contactId: contact.id});
         }
 
         $scope.removeContact = function(contact) {
@@ -83,7 +82,7 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
 });
 
 
-app.controller('NewCtrl', function($scope, $cordovaContacts, $location, $ionicHistory) {
+app.controller('NewCtrl', function($scope, $cordovaContacts, $state, $ionicHistory) {
     $scope.createContact = function(contact) {
         
         $cordovaContacts.save(
@@ -103,8 +102,38 @@ app.controller('NewCtrl', function($scope, $cordovaContacts, $location, $ionicHi
                     }
                 ]
             }).then(function(result) {
-            $location.path("/");
+            $state.go("list");
             
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    $scope.goBack = function() {
+      $ionicHistory.goBack();
+   };
+ 
+});
+
+app.controller('EditCtrl', function($scope, $stateParams, $cordovaContacts, $state, $ionicHistory) {
+    $scope.contact = {};
+
+    var opts = {                                           
+      filter : $stateParams.contactId,                  
+      multiple: false,                             
+      fields:  [ 'id' ],
+      hasPhoneNumber: true
+    };
+
+    $cordovaContacts.find(opts).then(function(result) {
+        $scope.contact = result[0];
+    }, function(error) {
+        console.log("ERROR: " + error);
+    });
+
+    $scope.save = function(contact) {
+        $scope.contact.save(function(result) {
+            $state.go("list");
         }, function(error) {
             console.log(error);
         });

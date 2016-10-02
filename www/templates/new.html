@@ -1,0 +1,26 @@
+<ion-view title="Novo Contato">
+    <ion-nav-bar class="bar-stable">
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">Novo Contato</h1>
+        </ion-header-bar>
+        <ion-nav-back-button class="button-clear" ng-click="goBack()">
+            <i class="icon ion-arrow-left-c"></i>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content>
+        <form ng-submit="createContact(contact)">
+            <div class="list" style="margin:0 auto; padding-left: 25px; padding-right: 25px; ">
+                Nome:
+                <input type="text" name="name" ng-model="contact.nome" placeholder="Nome" required>
+                <br> E-mail:
+                <input type="email" name="email" ng-model="contact.email" placeholder="Email" required>
+                <br> Telefone
+                <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone" required>
+                <br>
+            </div>
+            <div class="padding">
+                <button type="submit" class="button button-block button-positive">Criar Contato</button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
