@@ -46,7 +46,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/");
 })
 
-app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $location) {
+app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $location, $state) {
 
     $ionicPlatform.ready(function() {
   
@@ -65,7 +65,8 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
         };
     
         $scope.editContact = function(contact) {
-            $location.path("/edit");
+            // $location.path("/edit");
+            $state.go("edit");
         }
 
         $scope.removeContact = function(contact) {
@@ -82,7 +83,7 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
 });
 
 
-app.controller('NewCtrl', function($scope, $cordovaContacts, $location) {
+app.controller('NewCtrl', function($scope, $cordovaContacts, $location, $ionicHistory) {
     $scope.createContact = function(contact) {
         
         $cordovaContacts.save(
@@ -108,5 +109,9 @@ app.controller('NewCtrl', function($scope, $cordovaContacts, $location) {
             console.log(error);
         });
     };
+
+    $scope.goBack = function() {
+      $ionicHistory.goBack();
+   };
  
 });

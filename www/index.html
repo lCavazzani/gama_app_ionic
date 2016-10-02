@@ -1,78 +1,99 @@
 <!DOCTYPE html>
 <html ng-app="starter">
-  <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title></title>
-        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
-        <script src="lib/ionic/js/ionic.bundle.js"></script>
-        <script src="lib/ngCordova/dist/ng-cordova.js"></script>
-        <script src="cordova.js"></script>
-        <script src="js/app.js"></script>
 
-		<!--<link rel="stylesheet" href="styles/styles.css">
-		<link href="css/bootstrap.min.css" rel="stylesheet"> -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
 </head>
 
 <body>
     <ion-nav-view class="slide-left-right"></ion-nav-view>
-
     <script id="index.html" type="text/ng-template">
-      <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="Contatos" hide-back-button="true" class="padding" ng-controller="ContatosCtrl">
-        <ion-header-bar class="bar-stable">
-            <button class="button" ng-click="getContactList()">Load</button>
-            <h1 class="title">Contatos</h1>
-            <a class="button" ui-sref="new">New</a>
-        </ion-header-bar>
-        <ion-content>
-            <ion-list>
-                <ion-item ng-repeat="contact in contacts">
+        <!-- The title of the ion-view will be shown on the navbar -->
+        <ion-view title="Contatos" hide-back-button="true" class="padding" ng-controller="ContatosCtrl">
+            <ion-header-bar class="bar-stable">
+                <button class="button" ng-click="getContactList()">Load</button>
+                <h1 class="title">Contatos</h1>
+                <a class="button button-icon icon ion-plus-round" ui-sref="new"></a>
+            </ion-header-bar>
+            <ion-content>
+                <ion-list ng-repeat="contact in contacts">
                     <a class="item item-avatar item-icon-right">
-                        <img src="{{contact.photos[0].value}}" ng-if="contact.photos.length > 0" ng-click="editContact(contact)">
-                        <img src="img/user-avatar.png" ng-if="!contact.photos" ng-click="editContact(contact)">
-                        <h2 ng-click="editContact(contact)">{{contact.displayName}}</h2>
-                        <p ng-click="editContact(contact)">{{contact.phoneNumbers[0].value}}</p>
-                        <i class="icon ion-trash-a" ng-click="removeContact(contact)"></i>
-                    </a>
-                </ion-item>
-            </ion-list>
-        </ion-content>
-      </ion-view>
-    </script>    
-
+                          <img src="{{contact.photos[0].value}}" ng-if="contact.photos.length > 0" ng-click="editContact(contact)">
+                          <img src="img/user-avatar.png" ng-if="!contact.photos" ng-click="editContact(contact)">
+                          <h2 ng-click="editContact(contact)">{{contact.displayName}}</h2>
+                          <p ng-click="editContact(contact)">{{contact.phoneNumbers[0].value}}</p>
+                          <i class="icon ion-trash-a" ng-click="removeContact(contact)"></i>
+                      </a>
+                </ion-list>
+            </ion-content>
+        </ion-view>
+    </script>
     <script id="new.html" type="text/ng-template">
-      <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="Novo Contato">
-        <form ng-submit="createContact(contact)">
-            <div class="list" style="margin:0 auto; padding-left: 25px; padding-right: 25px; ">
-                Nome: <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome" required><br>
-                E-mail: <input type="email" name="email" ng-model="contact.email" placeholder="Email" required><br>
-                Telefone <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone" required><br>
-            </div>
-            <div class="padding">
-                <button type="submit" class="button button-block button-positive">Criar Contato</button>
-            </div>
-        </form>
-      </ion-view>
-    </script> 
-
+        <!-- The title of the ion-view will be shown on the navbar -->
+        <ion-view title="Novo Contato">
+            <ion-nav-bar class="bar-stable">
+                <ion-header-bar class="bar-stable">
+                    <h1 class="title">Novo Contato</h1>
+                </ion-header-bar>
+                <ion-nav-back-button class="button-clear" ng-click="goBack()">
+                    <i class="icon ion-arrow-left-c"></i>
+                </ion-nav-back-button>
+            </ion-nav-bar>
+            <ion-content>
+                <form ng-submit="createContact(contact)">
+                    <div class="list" style="margin:0 auto; padding-left: 25px; padding-right: 25px; ">
+                        Nome:
+                        <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome" required>
+                        <br> E-mail:
+                        <input type="email" name="email" ng-model="contact.email" placeholder="Email" required>
+                        <br> Telefone
+                        <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone" required>
+                        <br>
+                    </div>
+                    <div class="padding">
+                        <button type="submit" class="button button-block button-positive">Criar Contato</button>
+                    </div>
+                </form>
+            </ion-content>
+        </ion-view>
+    </script>
     <script id="edit.html" type="text/ng-template">
-      <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="Editar Contato">
-        <form ng-submit="createContact(contact)">
-            <div class="list" style="margin-top:50px">
-                Nome: <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome"><br>
-                E-mail: <input type="text" name="email" ng-model="contact.email" placeholder="Email"><br>
-                Telefone <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone"><br>
-            </div>
-            <div class="padding">
-                <button type="submit" class="button button-block button-positive">Criar Contato</button>
-            </div>
-        </form>
-      </ion-view>
-    </script>     
-    
+        <!-- The title of the ion-view will be shown on the navbar -->
+        <ion-view title="Editar Contato">
+            <ion-nav-bar class="bar-stable">
+                <ion-header-bar class="bar-stable">
+                    <h1 class="title">Editar Contato</h1>
+                </ion-header-bar>
+                <ion-nav-back-button class="button-clear" ng-click="goBack()">
+                    <i class="icon ion-arrow-left-c"></i>
+                </ion-nav-back-button>
+            </ion-nav-bar>
+            <ion-content>
+                <form ng-submit="editContact(contact)">
+                    <div class="list" style="margin-top:50px">
+                        Nome:
+                        <input type="text" name="fname" ng-model="contact.nome" placeholder="Nome">
+                        <br> E-mail:
+                        <input type="text" name="email" ng-model="contact.email" placeholder="Email">
+                        <br> Telefone
+                        <input type="number" name="telefone" ng-model="contact.telefone" placeholder="Telefone">
+                        <br>
+                    </div>
+                    <div class="padding">
+                        <button type="submit" class="button button-block button-positive">Salvar</button>
+                    </div>
+                </form>
+            </ion-content>
+        </ion-view>
+    </script>
 </body>
+
 </html>
