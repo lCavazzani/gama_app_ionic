@@ -14,7 +14,7 @@ var app = angular.module('starter', ['ionic', 'ngCordova'])
 
 app.constant('_', _);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider
         .state('list', {
             cache: false,
@@ -28,17 +28,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
             controller: "NewCtrl"
         })
         .state('edit', {
+            cache: false,
             url: '/edit/:contactId',
             templateUrl: 'templates/edit.html',
             controller: "EditCtrl"
         })
 
     $urlRouterProvider.otherwise("/");
+
+    $ionicConfigProvider.views.maxCache(0);
 });
 
 app.controller('ContatosCtrl', function($rootScope, $scope, $state, $ionicPlatform, $ionicPopup, $cordovaContacts, _) {
 
     $ionicPlatform.ready(function() {
+
+        $scope.contacts = [];
 
         var opts = {
             multiple: true,
@@ -57,7 +62,7 @@ app.controller('ContatosCtrl', function($rootScope, $scope, $state, $ionicPlatfo
         $scope.editContact = function(contact) {
             $state.go("edit", {
                 contactId: contact.id
-            });
+            }, {reload:true});
         }
 
         $scope.removeContact = function(contact) {
@@ -194,7 +199,9 @@ app.controller('EditCtrl', function($scope, $stateParams, $state, $ionicHistory,
     $scope.save = function(contact) {
         $scope.contact.save(function(result) {
             $scope.showSuccess();
-            $state.go("list");
+            $ionicHistory.clearCache().then(function(){
+                $state.go("list", {}, {reload:true});
+            });
         }, function(error) {
             $scope.showError();
             $state.go("list");
@@ -215,7 +222,15 @@ app.controller('EditCtrl', function($scope, $stateParams, $state, $ionicHistory,
 
         $cordovaImagePicker.getPictures(options).then(function (results) {
             for (var i = 0; i < results.length; i++) {
-                $scope.contact.photos[0].value = results[i];   
+                if($scope.contact.photos) {
+                    $scope.contact.photos[0].value = results[i];
+                } else {
+                    $scope.contact.photos = [];
+                    $scope.contact.photos.push({
+                        "type": "base64",
+                        "value": results[i]
+                    });
+                }
             }
         }, function(error) {
             console.log('Error: ' + JSON.stringify(error));    
