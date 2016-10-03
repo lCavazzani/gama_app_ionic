@@ -23,6 +23,8 @@ var app = angular.module('starter', ['ionic', 'ngCordova'])
     });
 });
 
+app.constant('_', _);
+
 app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('list', {
@@ -44,7 +46,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 })
 
-app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $state) {
+app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $state, _) {
 
     $ionicPlatform.ready(function() {
 
@@ -56,7 +58,7 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
 
         $scope.getContactList = function() {
             $cordovaContacts.find(opts).then(function(result) {
-                $scope.contacts = result;
+                $scope.contacts = _.orderBy(result, ['displayName'], ['asc']);
             }, function(error) {
                 console.log("ERROR: " + error);
             });
@@ -86,7 +88,7 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
 
 app.controller('NewCtrl', function($scope, $ionicPlatform, $cordovaContacts, $state, $ionicHistory, $cordovaImagePicker) {
     $scope.collection = {
-        selectedImage: 'img/user-avatar.png'
+        selectedImage: 'img/user_profile_256.png'
     };
 
     $scope.goBack = function() {
@@ -123,25 +125,19 @@ app.controller('NewCtrl', function($scope, $ionicPlatform, $cordovaContacts, $st
         };
  
         $scope.changePhoto = function() {       
-            // Image picker will load images according to these settings
             var options = {
-                maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+                maximumImagesCount: 1, 
                 width: 600,
                 height: 600,
-                quality: 80            // Higher is better
+                quality: 80            
             };
  
             $cordovaImagePicker.getPictures(options).then(function (results) {
-                // Loop through acquired images
                 for (var i = 0; i < results.length; i++) {
-                    $scope.collection.selectedImage = results[i];   // We loading only one image so we can use it like this
- 
-                    // window.plugins.Base64.encodeFile($scope.collection.selectedImage, function(base64){  // Encode URI to Base64 needed for contacts plugin
-                    //     $scope.collection.selectedImage = base64;
-                    // });
+                    $scope.collection.selectedImage = results[i];
                 }
             }, function(error) {
-                console.log('Error: ' + JSON.stringify(error));    // In case of error
+                console.log('Error: ' + JSON.stringify(error));  
             });
         };  
  
@@ -180,8 +176,8 @@ app.controller('EditCtrl', function($scope, $stateParams, $cordovaContacts, $sta
     $scope.changePhoto = function() {       
         var options = {
             maximumImagesCount: 1, 
-            width: 300,
-            height: 300,
+            width: 600,
+            height: 600,
             quality: 80    
         };
 
@@ -190,7 +186,7 @@ app.controller('EditCtrl', function($scope, $stateParams, $cordovaContacts, $sta
                 $scope.contact.photos[0].value = results[i];   
             }
         }, function(error) {
-            console.log('Error: ' + JSON.stringify(error));    // In case of error
+            console.log('Error: ' + JSON.stringify(error));    
         });
     }; 
 
