@@ -1,20 +1,9 @@
-/* global angular */
-// Ionic Starter App
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
 var app = angular.module('starter', ['ionic', 'ngCordova'])
 
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-            // Don't remove this line unless you know what you are doing. It stops the viewport
-            // from snapping when text inputs are focused. Ionic handles this internally for
-            // a much nicer keyboard experience.
             cordova.plugins.Keyboard.disableScroll(true);
         }
         if (window.StatusBar) {
@@ -28,6 +17,7 @@ app.constant('_', _);
 app.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('list', {
+            cache: false,
             url: '/',
             templateUrl: 'index.html',
             controller: "ContatosCtrl"
@@ -46,7 +36,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 })
 
-app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform, $state, _) {
+app.controller('ContatosCtrl', function($rootScope, $scope, $state, $ionicPlatform, $ionicPopup, $cordovaContacts, _) {
 
     $ionicPlatform.ready(function() {
 
@@ -81,12 +71,33 @@ app.controller('ContatosCtrl', function($scope, $cordovaContacts, $ionicPlatform
             });
         }
 
+        $rootScope.$on('loadContacts', function() {
+            $scope.getContactList();
+        });
+
+        $scope.askDelete = function(contact) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Apagar Contato',
+                template: 'Deseja apagar o contato ' + contact.displayName + '?',
+                cancelText: 'Não',
+                okText: 'Sim'
+            });
+
+            confirmPopup.then(function(res) {
+                if(res) {
+                    $scope.removeContact(contact);
+                } else {
+                
+                }
+            });
+        };
+
     });
 
 });
 
 
-app.controller('NewCtrl', function($scope, $ionicPlatform, $cordovaContacts, $state, $ionicHistory, $cordovaImagePicker) {
+app.controller('NewCtrl', function($scope, $state, $ionicPlatform, $ionicHistory, $ionicPopup, $cordovaContacts, $cordovaImagePicker) {
     $scope.collection = {
         selectedImage: 'img/user_profile_256.png'
     };
@@ -117,10 +128,14 @@ app.controller('NewCtrl', function($scope, $ionicPlatform, $cordovaContacts, $st
                     }
                 ]
             }).then(function(result) {
+                $scope.showSuccess();
+                $scope.$emit('loadContacts');
                 $state.go("list");
 
             }, function(error) {
                 console.log(error);
+                $scope.showSuccess();
+                $state.go("list");
             });
         };
  
@@ -139,13 +154,27 @@ app.controller('NewCtrl', function($scope, $ionicPlatform, $cordovaContacts, $st
             }, function(error) {
                 console.log('Error: ' + JSON.stringify(error));  
             });
+        };
+
+        $scope.showSuccess = function() {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Novo Contato',
+                template: 'Contato adicionado com sucesso'
+            });
         };  
+
+        $scope.showError = function() {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Novo Contato',
+                template: 'Erro ao adicionar novo contato'
+            });
+        }; 
  
     });
 
 });
 
-app.controller('EditCtrl', function($scope, $stateParams, $cordovaContacts, $state, $ionicHistory, $cordovaImagePicker) {
+app.controller('EditCtrl', function($scope, $stateParams, $state, $ionicHistory, $ionicPopup, $cordovaContacts, $cordovaImagePicker) {
     $scope.contact = {};
 
     var opts = {
@@ -163,9 +192,12 @@ app.controller('EditCtrl', function($scope, $stateParams, $cordovaContacts, $sta
 
     $scope.save = function(contact) {
         $scope.contact.save(function(result) {
+            $scope.showSuccess();
+            $scope.$emit('loadContacts');
             $state.go("list");
         }, function(error) {
-            console.log(error);
+            $scope.showError();
+            $state.go("list");
         });
     };
 
@@ -187,6 +219,21 @@ app.controller('EditCtrl', function($scope, $stateParams, $cordovaContacts, $sta
             }
         }, function(error) {
             console.log('Error: ' + JSON.stringify(error));    
+        });
+    }; 
+
+    
+    $scope.showSuccess = function() {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Editar Contato',
+            template: 'Contato atualizado com sucesso'
+        });
+    };  
+
+    $scope.showError = function() {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Editar Contato',
+            template: 'Erro ao atualizar novo contato'
         });
     }; 
 

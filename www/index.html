@@ -31,7 +31,7 @@
                           <img src="img/user-avatar.png" ng-if="!contact.photos" ng-click="editContact(contact)">
                           <h2 ng-click="editContact(contact)">{{contact.displayName}}</h2>
                           <p ng-click="editContact(contact)">{{contact.phoneNumbers[0].value}}</p>
-                          <i class="icon ion-trash-a" ng-click="removeContact(contact)"></i>
+                          <i class="icon ion-trash-a" ng-click="askDelete(contact)"></i>
                       </a>
                 </ion-list>
             </ion-content>
