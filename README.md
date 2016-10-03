@@ -26,7 +26,7 @@ Funcionalidades CRUD:
  
 C - Botão NEW abre um form de criacao de usuario
 R - Botão LOAD carrega usuarios ja cadastrados na agenda do celular e aplicativo
-U - em breve
-D - em breve 
+U - Entrar no contato e editar suas informações
+D - Deletar o contato
 
-Carregar e adicionar fotos do usuario - em breve
+Carregar e adicionar fotos do usuario
