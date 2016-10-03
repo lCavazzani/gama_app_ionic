@@ -34,7 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
     $urlRouterProvider.otherwise("/");
-})
+});
 
 app.controller('ContatosCtrl', function($rootScope, $scope, $state, $ionicPlatform, $ionicPopup, $cordovaContacts, _) {
 
@@ -92,6 +92,8 @@ app.controller('ContatosCtrl', function($rootScope, $scope, $state, $ionicPlatfo
             });
         };
 
+        $scope.$emit('loadContacts');
+
     });
 
 });
@@ -129,7 +131,6 @@ app.controller('NewCtrl', function($scope, $state, $ionicPlatform, $ionicHistory
                 ]
             }).then(function(result) {
                 $scope.showSuccess();
-                $scope.$emit('loadContacts');
                 $state.go("list");
 
             }, function(error) {
@@ -193,7 +194,6 @@ app.controller('EditCtrl', function($scope, $stateParams, $state, $ionicHistory,
     $scope.save = function(contact) {
         $scope.contact.save(function(result) {
             $scope.showSuccess();
-            $scope.$emit('loadContacts');
             $state.go("list");
         }, function(error) {
             $scope.showError();
