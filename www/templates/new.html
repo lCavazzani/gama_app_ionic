@@ -8,6 +8,7 @@
         </ion-nav-back-button>
     </ion-nav-bar>
     <ion-content>
+        <img class="img-profile" ng-src="{{collection.selectedImage}}" ng-click="changePhoto()"/>
         <form ng-submit="createContact(contact)">
             <div class="list" style="margin:0 auto; padding-left: 25px; padding-right: 25px; ">
                 Nome:

@@ -8,6 +8,10 @@
         </ion-nav-back-button>
     </ion-nav-bar>
     <ion-content>
+        <img class="img-profile" src="{{contact.photos[0].value}}"
+            ng-if="contact.photos.length > 0" ng-click="changePhoto()">
+        <img class="img-profile" src="img/user-avatar.png"
+            ng-if="!contact.photos" ng-click="changePhoto()">
         <div class="list" style="margin:0 auto; padding-left: 25px; padding-right: 25px; ">
             Nome:
             <input type="text" name="name" ng-model="contact.displayName" placeholder="Nome">
