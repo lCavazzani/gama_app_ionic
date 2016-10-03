@@ -1,7 +1,7 @@
 {
-  "name": "gama_app_ionic",
+  "name": "GAMAgenda",
   "version": "1.1.1",
-  "description": "gama_app_ionic: An Ionic project",
+  "description": "GAMAgenda: Agenda de Contatos",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
